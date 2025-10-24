@@ -271,7 +271,11 @@ O projeto utiliza **Zod** para validação robusta:
 
 ## 🐳 Docker
 
-O projeto inclui configuração Docker Compose para desenvolvimento:
+O projeto está totalmente containerizado e inclui configurações tanto para desenvolvimento quanto para produção.
+
+### Docker Compose (Desenvolvimento)
+
+Para desenvolvimento local, use o Docker Compose que já configura o banco PostgreSQL:
 
 ```yaml
 services:
@@ -283,6 +287,69 @@ services:
       POSTGRES_DB: desafio
     ports:
       - "5432:5432"
+```
+
+```bash
+# Inicia apenas o banco de dados
+docker-compose up -d
+```
+
+### Dockerfile (Produção)
+
+O projeto inclui um `Dockerfile` otimizado para produção:
+
+```dockerfile
+FROM node:22-alpine AS builder
+
+WORKDIR /app
+
+COPY . ./
+
+RUN npm ci --only=production
+
+EXPOSE 3333
+
+CMD ["node", "src/server.ts"]
+```
+
+Para construir e executar a aplicação em container:
+
+```bash
+# Construir a imagem
+docker build -t api-courses .
+
+# Executar o container
+docker run -p 3333:3333 --env-file .env api-courses
+```
+
+### Docker Compose Completo (Produção)
+
+Para executar a aplicação completa com banco de dados:
+
+```bash
+# Criar um docker-compose.prod.yml
+services:
+  app:
+    build: .
+    ports:
+      - "3333:3333"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/desafio
+      - NODE_ENV=production
+    depends_on:
+      - db
+
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: desafio
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
 ```
 
 ## 🚀 Deploy

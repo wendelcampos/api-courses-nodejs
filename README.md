@@ -5,18 +5,21 @@
 ![Fastify](https://img.shields.io/badge/Fastify-000000?style=for-the-badge&logo=fastify&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)
 
-Uma API RESTful moderna desenvolvida com Node.js, TypeScript e Fastify para gerenciamento de cursos. Este projeto demonstra as melhores práticas de desenvolvimento backend com foco em performance, tipagem e documentação automática.
+Uma API RESTful moderna desenvolvida com Node.js, TypeScript e Fastify para gerenciamento de cursos. Este projeto demonstra as melhores práticas de desenvolvimento backend com foco em performance, tipagem, documentação automática e testes.
 
 ## 🚀 Funcionalidades
 
 - ✅ **CRUD de Cursos**: Create, Read, Update e Delete de cursos
-- 📝 **Documentação Automática**: Swagger/OpenAPI integrado
+- 📝 **Documentação Automática**: Swagger/OpenAPI integrado com Scalar
 - 🔒 **Validação de Dados**: Validação rigorosa com Zod
 - 🗄️ **ORM Moderno**: Drizzle ORM com TypeScript
 - 🐳 **Containerização**: Docker Compose para desenvolvimento
 - 📊 **Logs Estruturados**: Pino logger com formatação pretty
 - 🎯 **Type Safety**: 100% TypeScript
+- 🧪 **Testes Automatizados**: Vitest com cobertura de código
+- 🔐 **Preparado para Autenticação**: Estrutura JWT e Argon2 incluída
 
 ## 📋 Pré-requisitos
 
@@ -34,17 +37,25 @@ Uma API RESTful moderna desenvolvida com Node.js, TypeScript e Fastify para gere
 - **[Drizzle ORM](https://orm.drizzle.team/)** - ORM TypeScript moderno
 - **[PostgreSQL](https://www.postgresql.org/)** - Banco de dados relacional
 
-### Desenvolvimento
+### Desenvolvimento e Testes
 
+- **[Vitest](https://vitest.dev/)** - Framework de testes rápido e moderno
+- **[Supertest](https://github.com/visionmedia/supertest)** - Testes de integração HTTP
 - **[Pino](https://getpino.io/)** - Logger de alta performance
 - **[Swagger](https://swagger.io/)** - Documentação de API
 - **[Docker](https://www.docker.com/)** - Containerização
 - **[Scalar](https://scalar.com/)** - Interface moderna para documentação da API
 
+### Segurança (Preparado)
+
+- **[Argon2](https://github.com/ranisalt/node-argon2)** - Hash de senhas seguro
+- **[JWT](https://jwt.io/)** - Tokens de autenticação
+
 ## 📁 Estrutura do Projeto
 
 ```
 api-fundamentals/
+├── coverage/                   # Relatórios de cobertura de testes
 ├── drizzle/                    # Migrações do banco de dados
 │   ├── 0000_deep_sandman.sql   # Criação da tabela users
 │   ├── 0001_fast_madrox.sql    # Criação da tabela courses
@@ -57,12 +68,15 @@ api-fundamentals/
 │       ├── create-courses.ts   # POST /courses
 │       ├── get-courses.ts      # GET /courses
 │       └── get-course-by-id.ts # GET /courses/:id
+├── .env                        # Variáveis de ambiente (desenvolvimento)
+├── .env.test                   # Variáveis de ambiente (testes)
 ├── docker-compose.yml          # Configuração Docker
 ├── drizzle.config.ts          # Configuração Drizzle ORM
 ├── package.json               # Dependências e scripts
-├── requisicoes.http           # Exemplos de requisições
+├── requisicoes.http           # Exemplos de requisições HTTP
 ├── server.ts                  # Entrada da aplicação
-└── tsconfig.json             # Configuração TypeScript
+├── tsconfig.json             # Configuração TypeScript
+└── vitest.config.ts          # Configuração dos testes
 ```
 
 ## 🚀 Instalação e Configuração
@@ -89,6 +103,8 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/desafio"
 NODE_ENV="development"
 ```
 
+Para testes, o arquivo `.env.test` já está configurado.
+
 ### 4. Inicie o banco de dados
 
 ```bash
@@ -101,7 +117,13 @@ docker-compose up -d
 npm run db:migrate
 ```
 
-### 6. Inicie o servidor de desenvolvimento
+### 6. (Opcional) Execute o seed do banco
+
+```bash
+npm run db:seed
+```
+
+### 7. Inicie o servidor de desenvolvimento
 
 ```bash
 npm run dev
@@ -185,6 +207,8 @@ GET http://localhost:3333/courses
 GET http://localhost:3333/courses/dc3d8065-52ef-4e95-98d4-456ab1ba3b9e
 ```
 
+Você também pode usar o arquivo [requisicoes.http](requisicoes.http) com a extensão REST Client do VS Code.
+
 ## 🗄️ Esquema do Banco de Dados
 
 ### Tabela: `courses`
@@ -213,7 +237,29 @@ npm run dev          # Inicia o servidor em modo desenvolvimento
 npm run db:generate  # Gera migrações do Drizzle
 npm run db:migrate   # Executa as migrações
 npm run db:studio    # Abre o Drizzle Studio
+npm run db:seed      # Popula o banco com dados de exemplo
+
+# Testes
+npm test             # Executa os testes
+npm run pretest      # Prepara o ambiente de teste (executa migrações)
 ```
+
+## 🧪 Testes
+
+O projeto utiliza **Vitest** para testes automatizados:
+
+- **Testes de integração** com Supertest
+- **Cobertura de código** automática
+- **Ambiente isolado** com banco de dados separado
+- **Relatórios HTML** na pasta `coverage/`
+
+Para executar os testes:
+
+```bash
+npm test
+```
+
+Os relatórios de cobertura ficam disponíveis em `coverage/index.html`.
 
 ## 🔒 Validação de Dados
 
@@ -266,7 +312,7 @@ PORT=3333
 
 ## 📝 Licença
 
-Este projeto está sob a licença ISC. Veja o arquivo `package.json` para mais detalhes.
+Este projeto está sob a licença ISC. Veja o arquivo [package.json](package.json) para mais detalhes.
 
 ## 👨‍💻 Autor
 

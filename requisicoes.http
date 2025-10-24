@@ -1,14 +1,26 @@
 POST http://localhost:3333/courses
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmNzI2YzdhNS04MzRlLTRhYmYtYWQwMC1kNDI3YzJiMzYxMjAiLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTc2MTMyNzcxNX0.rU3qwt_KU78OsCR35w5CTJvYaWfSqnQZiRQVOIAw8ds
 
 {
-  "title": "Curso de Docker 2"
+  "title": "Curso de React Native"
 }
 
 ###
 
-GET http://localhost:3333/courses
+GET http://localhost:3333/courses?orderBy=title
 
 ###
 
-GET http://localhost:3333/courses/dc3d8065-52ef-4e95-98d4-456ab1ba3b9e
+GET http://localhost:3333/courses/b7c46fab-442a-43a9-a4d5-cfd44b4209f2
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmNzI2YzdhNS04MzRlLTRhYmYtYWQwMC1kNDI3YzJiMzYxMjAiLCJyb2xlIjoic3R1ZGVudCIsImlhdCI6MTc2MTMyNjkzNX0.hlXU-EK0l8Mpi8IPYQuF_CoZD0jQYVIKxEt6DO_Mzr0
+
+###
+
+POST http://localhost:3333/sessions
+Content-Type: application/json
+
+{
+  "email": "Celia_Nogueira4@live.com",
+  "password": "123456"
+}
